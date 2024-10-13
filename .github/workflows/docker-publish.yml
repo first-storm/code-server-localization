@@ -1,19 +1,27 @@
+name: Docker
+
 on:
-  schedule:
-    - cron: '36 16 * * *'  # 定时任务
+  # 允许任意分支 push 或 tag（除了 master 分支）
   push:
-    # branches:
-    #  - '*'  # 监听所有分支的push事件
-    # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]  # 语义化版本号推送时触发
+    branches-ignore:
+      - master
+    tags-ignore:
+      - master
   pull_request:
-    branches: [ '*' ]  # 监听所有分支的pull request事件
+    branches-ignore:
+      - master
+  # 支持手动触发，并允许输入自定义 tag
+  workflow_dispatch:
+    inputs:
+      custom_tag:
+        description: 'Custom Docker tag (optional)'
+        required: false
 
 env:
-  # 使用 docker.io 作为默认 Docker Hub，如果为空则使用 ghcr.io
+  # 使用 ghcr.io 作为默认的 Docker Registry
   REGISTRY: ghcr.io
-  # 使用 GitHub repository 的账户名和仓库名作为基础镜像名称
-  IMAGE_NAME: ${{ github.repository }}
+  # 镜像名称为 <GitHub账户>/<仓库名>-<分支名>
+  IMAGE_NAME: ${{ github.repository }}-${{ github.ref_name }}
 
 jobs:
   build:
@@ -28,18 +36,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 除了PR以外，安装cosign工具
+      # 安装 cosign 工具（除 PR 外）
       - name: Install cosign
         if: github.event_name != 'pull_request'
-        uses: sigstore/cosign-installer@59acb6260d9c0ba8f4a2f9d9b48431a222b68e20 #v3.5.0
+        uses: sigstore/cosign-installer@59acb6260d9c0ba8f4a2f9d9b48431a222b68e20 # v3.5.0
         with:
           cosign-release: 'v2.2.4'
 
-      # 设置Docker Buildx用于多平台构建和缓存
+      # 设置 BuildKit Docker container builder，支持多平台镜像构建和缓存
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
 
-      # 除了PR以外，登录到Docker registry
+      # 登录 Docker registry（除 PR 外）
       - name: Log into registry ${{ env.REGISTRY }}
         if: github.event_name != 'pull_request'
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
@@ -48,15 +56,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # 提取Docker镜像的metadata
+      # 提取 Docker 元数据，包括标签和标签
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
         with:
-          # 使用<repository>-<branch name> 作为镜像名称
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-${{ github.ref_name }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            ${{ github.event_name == 'workflow_dispatch' && inputs.custom_tag || github.ref_name }}
+            latest
 
-      # 使用Buildx构建并推送Docker镜像（PR时不推送）
+      # 构建并推送 Docker 镜像（除 PR 外）
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
@@ -68,7 +78,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # 签署发布的Docker镜像（除PR外）
+      # 签名已发布的 Docker 镜像（除 PR 外）
       - name: Sign the published Docker image
         if: ${{ github.event_name != 'pull_request' }}
         env:
