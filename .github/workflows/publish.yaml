@@ -12,7 +12,7 @@ env:
   # 使用 ghcr.io 作为默认的 Docker Registry
   REGISTRY: ghcr.io
   # 镜像名称为 <GitHub账户>/<仓库名>-<自定义标签>
-  IMAGE_NAME: ${{ github.repository }}-${{ github.event.inputs.custom_tag }}
+  IMAGE_NAME: ${{ github.repository }}-${{ github.ref_name }}
 
 jobs:
   publish:
