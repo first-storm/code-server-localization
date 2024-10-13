@@ -1,4 +1,4 @@
-FROM codercom/code-server
+FROM codercom/code-server:4.93.1-bookworm
 
 # Switch to root user to install packages
 USER root
