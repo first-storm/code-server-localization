@@ -28,12 +28,15 @@ ENV EXTENSIONS_GALLERY='{"serviceUrl": "https://marketplace.visualstudio.com/_ap
 
 
 # 安装 VS Code 扩展
-RUN code-server --install-extension ms-ceintl.vscode-language-pack-zh-hans
-RUN code-server --install-extension formulahendry.code-runner
-RUN code-server --install-extension ms-vscode.cmake-tools
-RUN code-server --install-extension ms-vscode.cpptools
-RUN code-server --install-extension twxs.cmake
-RUN code-server --install-extension ms-vscode.cpptools-themes
+RUN HOME=/home/coder code-server \
+    --user-data-dir=/home/coder/.local/share/code-server \
+    --install-extension ms-ceintl.vscode-language-pack-zh-hans \
+    --install-extension formulahendry.code-runner \
+    --install-extension ms-vscode.cmake-tools \
+    --install-extension ms-vscode.cpptools \
+    --install-extension twxs.cmake \
+    --install-extension ms-vscode.cpptools-themes
+
 
 # 切换回 coder 用户
 USER coder
