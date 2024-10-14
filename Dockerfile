@@ -30,11 +30,21 @@ USER coder
 # 安装 VS Code 扩展
 RUN HOME=/home/coder code-server \
     --user-data-dir=/home/coder/.local/share/code-server \
-    --install-extension ms-ceintl.vscode-language-pack-zh-hans \
-    --install-extension formulahendry.code-runner \
-    --install-extension ms-vscode.cmake-tools \
-    --install-extension ms-vscode.cpptools \
-    --install-extension twxs.cmake \
+    --install-extension ms-ceintl.vscode-language-pack-zh-hans && \
+    HOME=/home/coder code-server \
+    --user-data-dir=/home/coder/.local/share/code-server \
+    --install-extension formulahendry.code-runner && \
+    HOME=/home/coder code-server \
+    --user-data-dir=/home/coder/.local/share/code-server \
+    --install-extension ms-vscode.cmake-tools && \
+    HOME=/home/coder code-server \
+    --user-data-dir=/home/coder/.local/share/code-server \
+    --install-extension ms-vscode.cpptools && \
+    HOME=/home/coder code-server \
+    --user-data-dir=/home/coder/.local/share/code-server \
+    --install-extension twxs.cmake && \
+    HOME=/home/coder code-server \
+    --user-data-dir=/home/coder/.local/share/code-server \
     --install-extension ms-vscode.cpptools-themes
 
 # 设置工作目录
