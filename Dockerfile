@@ -24,9 +24,6 @@ ENV LC_ALL=zh_CN.UTF-8
 # 设置扩展市场服务 URL
 ENV EXTENSIONS_GALLERY='{"serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery", "itemUrl": "https://marketplace.visualstudio.com/items"}'
 
-# 切换回 coder 用户
-USER coder
-
 # 安装 VS Code 扩展
 RUN HOME=/home/defaultconfig code-server \
     --user-data-dir=/home/defaultconfig/.local/share/code-server \
@@ -46,6 +43,9 @@ RUN HOME=/home/defaultconfig code-server \
     HOME=/home/defaultconfig code-server \
     --user-data-dir=/home/defaultconfig/.local/share/code-server \
     --install-extension ms-vscode.cpptools-themes
+
+# 切换回 coder 用户
+USER coder
 
 
 # 设置工作目录
