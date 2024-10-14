@@ -28,24 +28,25 @@ ENV EXTENSIONS_GALLERY='{"serviceUrl": "https://marketplace.visualstudio.com/_ap
 USER coder
 
 # 安装 VS Code 扩展
-RUN HOME=/home/coder code-server \
-    --user-data-dir=/home/coder/.local/share/code-server \
+RUN HOME=/home/defaultconfig code-server \
+    --user-data-dir=/home/defaultconfig/.local/share/code-server \
     --install-extension ms-ceintl.vscode-language-pack-zh-hans && \
-    HOME=/home/coder code-server \
-    --user-data-dir=/home/coder/.local/share/code-server \
+    HOME=/home/defaultconfig code-server \
+    --user-data-dir=/home/defaultconfig/.local/share/code-server \
     --install-extension formulahendry.code-runner && \
-    HOME=/home/coder code-server \
-    --user-data-dir=/home/coder/.local/share/code-server \
+    HOME=/home/defaultconfig code-server \
+    --user-data-dir=/home/defaultconfig/.local/share/code-server \
     --install-extension ms-vscode.cmake-tools && \
-    HOME=/home/coder code-server \
-    --user-data-dir=/home/coder/.local/share/code-server \
+    HOME=/home/defaultconfig code-server \
+    --user-data-dir=/home/defaultconfig/.local/share/code-server \
     --install-extension ms-vscode.cpptools && \
-    HOME=/home/coder code-server \
-    --user-data-dir=/home/coder/.local/share/code-server \
+    HOME=/home/defaultconfig code-server \
+    --user-data-dir=/home/defaultconfig/.local/share/code-server \
     --install-extension twxs.cmake && \
-    HOME=/home/coder code-server \
-    --user-data-dir=/home/coder/.local/share/code-server \
+    HOME=/home/defaultconfig code-server \
+    --user-data-dir=/home/defaultconfig/.local/share/code-server \
     --install-extension ms-vscode.cpptools-themes
+
 
 # 设置工作目录
 WORKDIR /home/coder
