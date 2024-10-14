@@ -51,5 +51,8 @@ USER coder
 # 设置工作目录
 WORKDIR /home/coder
 
-# 暴露默认端口
+# 暴露默认端口USER 1000
+ENV USER=coder
+WORKDIR /home/coder
+ENTRYPOINT ["/usr/bin/entrypoint.sh", "--bind-addr", "0.0.0.0:8080", "."]
 EXPOSE 8080
