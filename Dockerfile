@@ -22,18 +22,20 @@ ENV LANGUAGE=zh_CN:zh
 ENV LC_ALL=zh_CN.UTF-8
 
 # 设置扩展市场服务 URL
-ENV EXTENSIONS_GALLERY='{"serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery"}'
+ENV EXTENSIONS_GALLERY='{"serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery", "itemUrl": "https://marketplace.visualstudio.com/items"}'
+
 
 # 切换回 coder 用户
 USER coder
 
 # 安装 VS Code 扩展
-RUN code-server --install-extension ms-ceintl.vscode-language-pack-zh-hans && \
-    code-server --install-extension formulahendry.code-runner && \
-    code-server --install-extension ms-vscode.cmake-tools && \
-    code-server --install-extension ms-vscode.cpptools && \
-    code-server --install-extension twxs.cmake && \
-    code-server --install-extension ms-vscode.cpptools-themes
+RUN code-server --install-extension ms-ceintl.vscode-language-pack-zh-hans
+RUN code-server --install-extension formulahendry.code-runner
+RUN code-server --install-extension ms-vscode.cmake-tools
+RUN code-server --install-extension ms-vscode.cpptools
+RUN code-server --install-extension twxs.cmake
+RUN code-server --install-extension ms-vscode.cpptools-themes
+
 
 # 设置工作目录
 WORKDIR /home/coder
