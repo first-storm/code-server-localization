@@ -31,6 +31,7 @@ USER coder
 RUN code-server --install-extension ms-ceintl.vscode-language-pack-zh-hans && \
     code-server --install-extension formulahendry.code-runner && \
     code-server --install-extension ms-vscode.cmake-tools && \
+    code-server --install-extension ms-vscode.cpptools && \
     code-server --install-extension twxs.cmake && \
     code-server --install-extension ms-vscode.cpptools-themes
 
