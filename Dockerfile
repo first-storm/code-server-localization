@@ -25,6 +25,12 @@ ENV LC_ALL=zh_CN.UTF-8
 # 设置扩展市场服务 URL
 ENV EXTENSIONS_GALLERY='{"serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery", "itemUrl": "https://marketplace.visualstudio.com/items"}'
 
+# Copy the settings.json file to the desired location inside the container
+COPY settings.json /home/defaultconfig/.local/share/code-server/User/
+
+# Set the permissions of the copied file to 777
+RUN chmod 777 /home/defaultconfig/.local/share/code-server/User/settings.json
+
 # 安装 VS Code 扩展
 RUN HOME=/home/defaultconfig code-server \
     --user-data-dir=/home/defaultconfig/.local/share/code-server \
