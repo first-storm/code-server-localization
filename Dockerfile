@@ -8,6 +8,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     build-essential \
     gcc \
+    fonts-firacode \
     g++ \
     gdb \
     cmake && \
