@@ -1,4 +1,4 @@
-FROM codercom/code-server:4.95.2-bookworm
+FROM codercom/code-server:4.95.3-bookworm
 
 # 切换到 root 用户以安装软件包
 USER root
